@@ -1,15 +1,18 @@
 from tool import Tools
 from player import Player
 from block import Block
-import sys
-
+from save import Save
+import csv
+import os
+global save
+save = Save()
 def main():
     block = None
     player = None
     tool = None
     while True:
         try:
-            options = int(input(("Welcome to text based game\n 1. Select Parameters\n 2. Play Game\n 3. Exit\n Selection: ")))
+            options = int(input(("Welcome to text based game\n 1. Select Parameters\n 2. Play Game\n 3.  View Pass Games\n 4. Exit\n Option: ")))
             match(options):
                 case(1):
                     block, player, tool = option1()
@@ -18,6 +21,9 @@ def main():
                         block, player, tool = option1()
                     option2(block, player, tool)
                 case (3):
+                    option3()
+                case (4):
+                    print("Thank you for playing")
                     break
         except ValueError:
             print("Enter Valid Input")
@@ -25,6 +31,26 @@ def main():
 
 
 def option1():
+    options = int(input("1. Load from save 0. Add new Parameters:"))
+    if options == 1:
+        file_path = "saveparameter.csv"
+        if not os.path.exists(file_path):
+            pass
+        else:
+            with open("saveparameter.csv","r") as File:
+                reader = csv.reader(File)
+                rows = list(reader)
+                for item in rows:
+                    print(f'Count: {item[0]}. Block Name: {item[1]}, Block Max: {item[2]}, Block Resource: {item[3]}, Block Durability Taken: {item[4]}, Player Name: {item[5]}, Toolname: {item[6]} ')
+                choice = int(input("Enter Count chosen: "))
+                for row in rows:
+                    if choice == int(row[0]):
+                        block = Block(int(row[2]), int(row[3]), int(row[4]), row[1])
+                        player = Player(row[5])
+                        tool = Tools(row[6])
+                        return [block, player, tool]
+    elif options == 0:
+        pass
     while True:
         try:
             playername = input("Player Name: ") 
@@ -33,13 +59,13 @@ def option1():
             resource = int(input("Resource Gained From Block: "))
             durabilitytaken = int(input("Durability taken of tool per hit: "))
             toolname = input("Tools: wooden pickaxe, stone pickaxe, iron pickaxe, diamond pickaxe, netherite Pickaxe: ").strip().lower()
-            if toolname not in ["wooden pickaxe,stone pickaxe,iron pickaxe,diamond pickaxe,netherite pickaxe"]:
+            if toolname not in ["wooden pickaxe","stone pickaxe","iron pickaxe","diamond pickaxe","netherite pickaxe"]:
                 toolname = input("Tools: wooden pickaxe, stone pickaxe, iron pickaxe, diamond pickaxe, netherite Pickaxe: ").strip().lower()
-
             block = Block(max, resource, durabilitytaken, blockname)
             player = Player(playername)
             tool = Tools(toolname)
-            option = int(input("Options:\n 1. Reset set parameters\n 0. Main Menu: "))
+            save.saveparameter(blockname, max, resource, durabilitytaken,playername,toolname)
+            option = int(input("Options:\n 1. Add new\n 0. Main Menu: "))
             if option == 1:
                 continue
             else:
@@ -69,13 +95,25 @@ def option2(block, player, tool):
                     block.regenerate()
                     round += 1
             elif mine == "exit":
+                save.savegame(player, block, tool)
                 options = int(input((f'Parameters set:\n 1. {player}\n 2. {block}\n 3. {tool}\n Press 1 to continue or 0 to exit main menu: ')))
                 if options == 1:
                     continue
                 else:
-                    return
+                    return 
         except ValueError:
             continue
+def option3():
+    with open("savedgames.csv") as file:
+        reader = csv.reader(file)
+        data = list(reader)
+        for items in sorted(data):
+            print(f'Count: {items[0]},  Player: {items[1]}, Block: {items[2]}, Tool: {items[3]}')
+    option = input("Press any key to go back to main menu: ")
+    if option == 0:
+        return
+    else: 
+        return
 
 if __name__ == "__main__":
     main()
