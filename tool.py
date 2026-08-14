@@ -2,7 +2,7 @@ class Tools:
     def __init__(self, tool):
         self.tool = tool
     def __str__(self):
-        return self.tool
+        return f'Tool name: {self.tool}, Tool damage: {self.damage}pts, Tool Durability: {self.durability}'
     @property
     def damage(self):
         return self._damage

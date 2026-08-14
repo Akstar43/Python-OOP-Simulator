@@ -7,6 +7,8 @@ class Block:
         self.resource =  resource
         self.min = 0
         self.durabilitytaken = durabilitytaken
+    def __str__(self):
+        return f'Block Name: {self.name}, Block Size: {self.height}, Block Resource: {self.resource},Block Durability Taken: {self.durabilitytaken}'
     @property
     def height(self):
         return self._height
