@@ -4,9 +4,8 @@ from block import Block
 from save import Save
 import csv
 import os
-global save
-save = Save()
 def main():
+    save = Save()
     block = None
     player = None
     tool = None
@@ -15,11 +14,11 @@ def main():
             options = int(input(("Welcome to text based game\n 1. Select Parameters\n 2. Play Game\n 3.  View Pass Games\n 4. Exit\n Option: ")))
             match(options):
                 case(1):
-                    block, player, tool = option1()
+                    block, player, tool = option1(save)
                 case (2):
                     if block is None:
-                        block, player, tool = option1()
-                    option2(block, player, tool)
+                        block, player, tool = option1(save)
+                    option2(block, player, tool, save)
                 case (3):
                     option3()
                 case (4):
@@ -30,7 +29,7 @@ def main():
             continue
 
 
-def option1():
+def option1(save):
     options = int(input("1. Load from save 0. Add new Parameters:"))
     if options == 1:
         file_path = "saveparameter.csv"
@@ -74,7 +73,7 @@ def option1():
             continue
 
 
-def option2(block, player, tool):
+def option2(block, player, tool, save):
     round = 0
     options = int(input((f'Parameters set:\n 1. {player}\n 2. {block}\n 3. {tool}\n Press 1 to continue or 0 to exit main menu: ')))
     if options == 1:
