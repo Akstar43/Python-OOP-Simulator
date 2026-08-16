@@ -4,6 +4,7 @@ from block import Block
 from save import Save
 import csv
 import os
+import argparse
 def main():
     save = Save()
     block = None
@@ -14,13 +15,13 @@ def main():
             options = int(input(("Welcome to text based game\n 1. Select Parameters\n 2. Play Game\n 3.  View Pass Games\n 4. Exit\n Option: ")))
             match(options):
                 case(1):
-                    block, player, tool = option1(save)
+                    block, player, tool = selectparams(save)
                 case (2):
                     if block is None:
-                        block, player, tool = option1(save)
-                    option2(block, player, tool, save)
+                        block, player, tool = selectparams(save)
+                    startgame(block, player, tool, save)
                 case (3):
-                    option3()
+                    viewprevgames(save)
                 case (4):
                     print("Thank you for playing")
                     break
@@ -29,7 +30,7 @@ def main():
             continue
 
 
-def option1(save):
+def selectparams(save):
     options = int(input("1. Load from save 0. Add new Parameters:"))
     if options == 1:
         file_path = "saveparameter.csv"
@@ -73,7 +74,7 @@ def option1(save):
             continue
 
 
-def option2(block, player, tool, save):
+def startgame(block, player, tool, save):
     round = 0
     options = int(input((f'Parameters set:\n 1. {player}\n 2. {block}\n 3. {tool}\n Press 1 to continue or 0 to exit main menu: ')))
     if options == 1:
@@ -102,17 +103,18 @@ def option2(block, player, tool, save):
                     return 
         except ValueError:
             continue
-def option3():
-    with open("savedgames.csv") as file:
-        reader = csv.reader(file)
-        data = list(reader)
-        for items in sorted(data):
-            print(f'Count: {items[0]},  Player: {items[1]}, Block: {items[2]}, Tool: {items[3]}')
+def viewprevgames(save):
+    save.opensave()
     option = input("Press any key to go back to main menu: ")
     if option == 0:
         return
     else: 
         return
 
+
+
+
+    
+    
 if __name__ == "__main__":
     main()

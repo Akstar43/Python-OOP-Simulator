@@ -35,4 +35,10 @@ class Save:
                 count += 1
             with open("c.txt", "w") as updatedcount:
                 updatedcount.write(str(count))
+    def opensave(self):
+        with open("savedgames.csv") as file:
+            reader = csv.reader(file)
+            data = list(reader)
+        for items in sorted(data):
+            print(f'Count: {items[0]},  Player: {items[1]}, Block: {items[2]}, Tool: {items[3]}')
 
