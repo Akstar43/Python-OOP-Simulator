@@ -1,0 +1,26 @@
+[
+    {
+        "block name": "stone",
+        "durabilitytaken": 10,
+        "size": 20,
+        "resource": 3
+    },
+    {
+        "block name": "stone",
+        "durabilitytaken": 31,
+        "size": 14,
+        "resource": 3
+    },
+    {
+        "block name": "obsidian ",
+        "durabilitytaken": 5,
+        "size": 100,
+        "resource": 8
+    },
+    {
+        "block name": "lava",
+        "durabilitytaken": 0,
+        "size": 2,
+        "resource": 4
+    }
+]
